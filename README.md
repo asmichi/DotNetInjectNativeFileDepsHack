@@ -1,6 +1,6 @@
 # Asmichi.InjectNativeFileDepsHack
 
-An *insane hack* to inject runtime assets into deps.json by injecting RuntimeTargetsCopyLocalItems items into the GenerateDepsFile task.
+An *insane hack* to inject runtime assets into deps.json by injecting `RuntimeTargetsCopyLocalItems` items into the `GenerateDepsFile` task.
 
 This library can be obtained via [NuGet](https://www.nuget.org/packages/Asmichi.InjectNativeFileDepsHack/).
 
@@ -25,6 +25,11 @@ Tested on the following versions of the .NET SDK:
 # Usage
 List the native files as `InjectNativeFileDepsHack` items.
 
+Notes:
+
+- Normally you list the native DLLs as `Content` items in the library project, so the native DLLs should be copied into `$(OutputPath)`.
+- You cannot use wildcards in `Include` to list files within output directories because these wild cards are evaluated before the build starts and thus output files do not yet exist.
+
 ```xml
   <ItemGroup>
     <PackageReference Include="Asmichi.InjectNativeFileDepsHack" Version="0.1.0" PrivateAssets="all" IncludeAssets="runtime;build;native;contentfiles;analyzers" />
@@ -40,7 +45,16 @@ List the native files as `InjectNativeFileDepsHack` items.
   </ItemGroup>
 ```
 
-Notes:
+# Appendices
 
-- Normally you list the native DLLs as `Content` items in the library project, so the native DLLs should be copied into `$(OutputPath)`.
-- You cannot use wildcards in `Include` to list files within output directories because these wild cards are evaluated before the build starts and thus output files do not yet exist.
+## Real-world example
+
+See https://github.com/asmichi/ChildProcess/blob/master/build/msbuild/InjectChildProcessNativeFileDeps.targets and its usage.
+
+## How Asmichi.InjectNativeFileDepsHack works
+
+Basically, it tricks the deps.json generation process into treating the specified native DLLs as the runtime assets of the `Asmichi.InjectNativeFileDepsHack` NuGet library.
+
+The `runtimeTargets` items (`assetType` == `native`) of a library [comes from `RuntimeLibray.NativeLibraryGroups`](https://github.com/dotnet/runtime/blob/v6.0.6/src/libraries/Microsoft.Extensions.DependencyModel/src/DependencyContextWriter.cs#L289). Looking into [the target](https://github.com/dotnet/sdk/blob/v6.0.301/src/Tasks/Microsoft.NET.Build.Tasks/targets/Microsoft.NET.Sdk.targets#L176),  [`GenerateDepsFile`](https://github.com/dotnet/sdk/blob/v6.0.301/src/Tasks/Microsoft.NET.Build.Tasks/GenerateDepsFile.cs#L194) and [`DependencyContextBuilder`](https://github.com/dotnet/sdk/blob/v6.0.301/src/Tasks/Microsoft.NET.Build.Tasks/DependencyContextBuilder.cs#L529) for clues of how `NativeLibraryGroups` are collected, you will notice that a `project` type library always have empty `NativeLibraryGroups`. So, there is no way to add `runtimeTargets` items into a `project` type library. Absolutely no way! Only NuGet libraries!
+
+NuGet runtime files are collected by `ResolvePackageAssets` as `RuntimeTargetsCopyLocalItems`. `Asmichi.InjectNativeFileDepsHack` adds the specified native DLLs as `RuntimeTargetsCopyLocalItems` items just before `GenerateDepsFile` runs, hence they appear as `runtimeTargets` items of the `Asmichi.InjectNativeFileDepsHack` NuGet library.
