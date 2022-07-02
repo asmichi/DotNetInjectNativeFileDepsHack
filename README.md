@@ -28,7 +28,7 @@ List the native files as `InjectNativeFileDepsHack` items in your application pr
 Notes:
 
 - Normally you list the native DLLs as `Content` items in the library project, so the native DLLs should be copied into `$(OutputPath)`.
-- You cannot use wildcards in `Include` to list files within output directories because these wild cards are evaluated before the build starts and thus output files do not yet exist.
+- You cannot use wildcards in `Include` to list files within output directories because these wildcards are evaluated before the build starts and thus output files are not yet built (such a wildcard will break clean builds).
 
 ```xml
   <ItemGroup>
