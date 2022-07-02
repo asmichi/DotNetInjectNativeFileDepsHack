@@ -23,7 +23,7 @@ Tested on the following versions of the .NET SDK:
 - 6.0.301
 
 # Usage
-List the native files as `InjectNativeFileDepsHack` items.
+List the native files as `InjectNativeFileDepsHack` items in your application project (**not** your library project).
 
 Notes:
 
