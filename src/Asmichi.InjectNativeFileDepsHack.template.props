@@ -1,0 +1,7 @@
+<!-- Copyright (c) @asmichi (https://github.com/asmichi). Licensed under the MIT License. -->
+<Project>
+  <PropertyGroup>
+    <AsmichiInjectNativeFileDepsHackPackageId>Asmichi.InjectNativeFileDepsHack</AsmichiInjectNativeFileDepsHackPackageId>
+    <AsmichiInjectNativeFileDepsHackPackageVersion>[insert_version_here]</AsmichiInjectNativeFileDepsHackPackageVersion>
+  </PropertyGroup>
+</Project>

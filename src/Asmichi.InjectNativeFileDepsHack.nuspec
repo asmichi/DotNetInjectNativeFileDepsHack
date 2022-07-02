@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Asmichi.InjectNativeFileDepsHack</id>
+    <version>$version$</version>
+    <authors>asmichi</authors>
+    <owners>asmichi</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>https://github.com/asmichi/DotNetInjectNativeFileDepsHack</projectUrl>
+    <description>An extreme hack to inject native files into deps.json.</description>
+    <releaseNotes/>
+    <copyright>Copyright (c) @asmichi (https://github.com/asmichi)</copyright>
+    <tags>dotnet</tags>
+    <repository type="git" url="https://github.com/asmichi/DotNetInjectNativeFileDepsHack" commit="$commitHash$"/>
+  </metadata>
+  <files>
+    <file src="build\*" target="build" />
+  </files>
+</package>

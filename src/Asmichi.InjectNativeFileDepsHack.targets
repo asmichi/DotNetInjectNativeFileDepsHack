@@ -1,0 +1,23 @@
+<!-- Copyright (c) @asmichi (https://github.com/asmichi). Licensed under the MIT License. -->
+<Project>
+  <!--
+    An *insane hack* to inject runtime assets into deps.json by injecting RuntimeTargetsCopyLocalItems items into the GenerateDepsFile task.
+    This is a workaround for https://github.com/dotnet/sdk/issues/1088 "Runtime assets from reference projects do not appear in deps.json".
+
+    WARNING: This plays with the implementation details deep inside the .NET SDK. It is likely that this will break even by a minor version update of the .NET SDK.
+  -->
+  <Target Name="AsmichiInjectNativeFileDepsHack" BeforeTargets="GenerateBuildDependencyFile">
+    <ItemGroup>
+      <RuntimeTargetsCopyLocalItems Include="@(InjectNativeFileDepsHack)">
+        <AssetType>native</AssetType>
+        <CopyLocal>true</CopyLocal>
+        <NuGetPackageId>$(AsmichiInjectNativeFileDepsHackPackageId)</NuGetPackageId>
+        <NuGetPackageVersion>$(AsmichiInjectNativeFileDepsHackPackageVersion)</NuGetPackageVersion>
+        <DestinationSubDirectory>$([MSBuild]::EnsureTrailingSlash('%(InjectNativeFileDepsHack.DestinationSubDirectory)'))</DestinationSubDirectory>
+        <DestinationSubPath>%(RuntimeTargetsCopyLocalItems.DestinationSubDirectory)%(InjectNativeFileDepsHack.Filename)%(InjectNativeFileDepsHack.Extension)</DestinationSubPath>
+        <PathInPackage>$([System.String]::Copy('%(RuntimeTargetsCopyLocalItems.DestinationSubPath)').Replace('\', '/'))</PathInPackage>
+        <RuntimeIdentifier>%(InjectNativeFileDepsHack.RuntimeIdentifier)</RuntimeIdentifier>
+      </RuntimeTargetsCopyLocalItems>
+    </ItemGroup>
+  </Target>
+</Project>
