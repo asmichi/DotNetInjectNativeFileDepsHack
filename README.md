@@ -37,8 +37,8 @@ Notes:
 
   <ItemGroup>
     <InjectNativeFileDepsHack Include="$(OutputPath)runtimes\linux-x64\native\libMyAwesomeLibrary.so">
-      <!-- The relative path of the deployed files from the application directory. -->
-      <DestinationSubDirectory>runtimes\linux-x64\native\libMyAwesomeLibrary.so</DestinationSubDirectory>
+      <!-- The relative path of the deployed directory from the application directory. -->
+      <DestinationSubDirectory>runtimes\linux-x64\native</DestinationSubDirectory>
       <!-- RID -->
       <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     </InjectNativeFileDepsHack>
