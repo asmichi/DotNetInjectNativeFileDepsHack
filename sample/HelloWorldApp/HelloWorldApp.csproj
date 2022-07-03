@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HelloWorldLibrary\HelloWorldLibrary.csproj" />
+  </ItemGroup>
+
+  <!--
+    Without this, execution would result in a DllNotFoundException:
+
+    Unhandled exception. System.DllNotFoundException: Unable to load shared library 'libHelloWorld' or one of its dependencies.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Asmichi.InjectNativeFileDepsHack" Version="0.1.0" PrivateAssets="all" IncludeAssets="runtime;build;native;contentfiles;analyzers" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InjectNativeFileDepsHack Include="$(OutputPath)runtimes\linux-x64\native\libHelloWorld.so">
+      <DestinationSubDirectory>runtimes\linux-x64\native</DestinationSubDirectory>
+      <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    </InjectNativeFileDepsHack>
+  </ItemGroup>
+
+</Project>

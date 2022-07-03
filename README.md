@@ -47,6 +47,14 @@ Notes:
 
 # Appendices
 
+## Example
+
+See [sample](sample) for a minimal example. To run the sample, on an x64 Linux system, run:
+
+```
+(cd sample; ./build_and_run.sh)
+```
+
 ## Real-world example
 
 See https://github.com/asmichi/ChildProcess/blob/master/build/msbuild/InjectChildProcessNativeFileDeps.targets and its usage.
