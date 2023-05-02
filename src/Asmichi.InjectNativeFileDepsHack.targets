@@ -8,7 +8,7 @@
   -->
   <Target Name="AsmichiInjectNativeFileDepsHack" BeforeTargets="GenerateBuildDependencyFile">
     <ItemGroup>
-      <RuntimeTargetsCopyLocalItems Include="@(InjectNativeFileDepsHack)">
+      <RuntimeTargetsCopyLocalItems Include="@(InjectNativeFileDepsHack)" Condition="'$(RuntimeIdentifier)'==''" >
         <AssetType>native</AssetType>
         <CopyLocal>true</CopyLocal>
         <NuGetPackageId>$(AsmichiInjectNativeFileDepsHackPackageId)</NuGetPackageId>
@@ -18,6 +18,16 @@
         <PathInPackage>$([System.String]::Copy('%(RuntimeTargetsCopyLocalItems.DestinationSubPath)').Replace('\', '/'))</PathInPackage>
         <RuntimeIdentifier>%(InjectNativeFileDepsHack.RuntimeIdentifier)</RuntimeIdentifier>
       </RuntimeTargetsCopyLocalItems>
+
+      <NativeCopyLocalItems Include="@(InjectNativeFileDepsHack)" Condition="'$(RuntimeIdentifier)'!='' and '%(InjectNativeFileDepsHack.RuntimeIdentifier)'=='$(RuntimeIdentifier)'" >
+        <AssetType>native</AssetType>
+        <CopyLocal>true</CopyLocal>
+        <NuGetPackageId>$(AsmichiInjectNativeFileDepsHackPackageId)</NuGetPackageId>
+        <NuGetPackageVersion>$(AsmichiInjectNativeFileDepsHackPackageVersion)</NuGetPackageVersion>
+        <DestinationSubPath>%(InjectNativeFileDepsHack.Filename)%(InjectNativeFileDepsHack.Extension)</DestinationSubPath>
+        <PathInPackage>$([System.String]::Copy('%(RuntimeTargetsCopyLocalItems.DestinationSubPath)').Replace('\', '/'))</PathInPackage>
+        <RuntimeIdentifier>%(InjectNativeFileDepsHack.RuntimeIdentifier)</RuntimeIdentifier>
+      </NativeCopyLocalItems>
     </ItemGroup>
   </Target>
 </Project>

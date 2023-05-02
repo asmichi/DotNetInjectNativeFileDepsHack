@@ -1,5 +1,7 @@
 using System.Runtime.InteropServices;
 
+[assembly: DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+
 namespace HelloWorld;
 
 public static class HelloWorldLibrary

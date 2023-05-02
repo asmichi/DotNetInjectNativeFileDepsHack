@@ -32,7 +32,7 @@ Notes:
 
 ```xml
   <ItemGroup>
-    <PackageReference Include="Asmichi.InjectNativeFileDepsHack" Version="0.1.0" PrivateAssets="all" IncludeAssets="runtime;build;native;contentfiles;analyzers" />
+    <PackageReference Include="Asmichi.InjectNativeFileDepsHack" Version="0.2.0" PrivateAssets="all" IncludeAssets="runtime;build;native;contentfiles;analyzers" />
   </ItemGroup>
 
   <ItemGroup>

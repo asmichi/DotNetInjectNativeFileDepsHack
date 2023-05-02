@@ -1,4 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -17,14 +19,26 @@
     Unhandled exception. System.DllNotFoundException: Unable to load shared library 'libHelloWorld' or one of its dependencies.
   -->
   <ItemGroup>
-    <PackageReference Include="Asmichi.InjectNativeFileDepsHack" Version="0.1.0" PrivateAssets="all" IncludeAssets="runtime;build;native;contentfiles;analyzers" />
+    <PackageReference Include="Asmichi.InjectNativeFileDepsHack" Version="0.2.0" PrivateAssets="all" IncludeAssets="runtime;build;native;contentfiles;analyzers" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(RuntimeIdentifier)'==''">
     <InjectNativeFileDepsHack Include="$(OutputPath)runtimes\linux-x64\native\libHelloWorld.so">
       <DestinationSubDirectory>runtimes\linux-x64\native</DestinationSubDirectory>
       <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     </InjectNativeFileDepsHack>
   </ItemGroup>
+
+  <!-- When RuntimeIdentifier is given, runtimes/... levels will be omitted. -->
+  <ItemGroup Condition="'$(RuntimeIdentifier)'=='linux-x64'">
+    <InjectNativeFileDepsHack Include="$(OutputPath)libHelloWorld.so">
+      <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    </InjectNativeFileDepsHack>
+  </ItemGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+  <!-- For testing, override the target from the package -->
+  <Import Project="..\..\src\Asmichi.InjectNativeFileDepsHack.targets" Condition="'$(ImportCurrentTargets)'=='true'" />
 
 </Project>
